@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test</title>
+    <style>
+       body{
+        background: linear-gradient(135deg, #1d976c, #93f9b9, #00c9ff);
+
+
+}
+        #quiz-container {
+			margin-top: 30px;
+            border: 1px solid #464141;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bolder;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+			font-size: 20px;
+        }
+        .options li {
+            margin: 5px 0;
+        }
+		#radio{
+			height:20px; 
+			width:20px;
+		}
+		#watermark{
+            position:fixed;
+            bottom:5px;
+            right:5px;
+            opacity:0.5;
+            z-index:99;
+            color:black;
+}
+.options{
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+button{    
+    width: 100px;
+    height: 50px;
+    background-color: rgba(10, 148, 176, 0.941);
+    border-radius: 20px;
+    border-color: rgba(0, 0, 0, 0.918);
+}
+button:hover {
+    background-color:rgba(100, 245, 173, 0.612);
+}
+
+    </style>
+    <script language="javascript">
+        function clearData(){
+            window.clipboardData.setData('text','') 
+        }
+        function cldata(){
+            if(clipboardData){
+                clipboardData.clearData();
+            }
+        }
+        setInterval("cldata();", 1000);
+    </script>
+</head>
+	<body id="body" ondragstart="return false;" onselectstart="return false;"  oncontextmenu="return false;" onload="clearData();" onblur="clearData();" style="text-align: center; font-size: 20px;">
+		<div style="display: flex; align-items: center; flex-direction: row-reverse;">
+      
+    </div>
+    <div style="display: flex; justify-content:end">
+         <div id="count" style="margin-right: 50px; margin-top: 20px; font-weight: bolder;"></div>
+    </div>
+    <h3 >Aptitude Online Exam</h3>
+    <div id="quiz-container">
+        <div id="question-container">
+            <p class="question" id="question"></p>
+            <ul class="options" id="options"></ul>
+        </div>
+		<div>
+            <button id="prevButton" onclick="prevQuestion()">Previous</button>
+            <button id="nextButton" onclick="nextQuestion()">Next</button> <br><br>
+            <button id="submitButton" onclick="submitQuiz()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            
+            ["What is the capital of France?", ["Berlin", "Madrid", "Paris", "Rome"]],
+            ["What is 5 + 7?", ["10", "11", "12", "13"]],
+            ["Which planet is known as the Red Planet?", ["Earth", "Mars", "Jupiter", "Saturn"]],
+            ["What is the largest ocean?", ["Atlantic", "Indian", "Pacific", "Arctic"]],
+            ["What is the square root of 64?", ["6", "7", "8", "9"]],
+            ["Who wrote 'Hamlet'?", ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"]],
+            ["What is the value of pi to two decimal places?", ["3.12", "3.14", "3.16", "3.18"]],
+            ["Which animal is known as the King of the Jungle?", ["Elephant", "Tiger", "Lion", "Giraffe"]],
+            ["What is the freezing point of water?", ["0°C", "32°C", "100°C", "-1°C"]],
+            ["Which country is known as the Land of the Rising Sun?", ["China", "India", "Japan", "Thailand"]],
+            ["Choose the odd one",["144","196","225","400"]],
+            ["11:1331 :: 9 : __",["729","512","216","125"]],
+            ["In a certain code language, the word KATE is written as LBVG. Using the same pattern, how would the word GIVE be coded in this language?",["FHTC","HJXG","IKWF","None of these"]],
+            ["The time shown by the reflection of a clok in a mirror is 4 hours 25 minutes. What is the actual time on the clock?",["3:25","7:35","6:35","None"]],
+            ["Find the missing term : 5,11,24, 51,106,__",["217","234","207","201"]],
+            ["On March 11th,2009, it was Wednesday. The day of the week on March 11th, 2008 would be?",["Monday","Tuesday","Wednesday","Saturday"]],
+            ["Ravi has saved Rs.6000 and decides to invest it in a savings account that offers a simple interest rate of 10% per annum. He plans to keep the money in the account for 3 years. How much simple interest will Ravi earn at the end of 3 years?",["Rs.1800","Rs2400","Rs4800","Rs4200"]],
+            ["The area of a square park is 81 sq. km . How much time it will take to complete a round the park once at a speed of 6 kmph?",["4.5 hours","6 hours","4 hours","9 hours"]],
+            ["What is the angle between the two hands of the clock at 3:20?",["40°","60°","20°","50°"]],
+            ["The price of a calculator is increased from Rs 640 to Rs 800. What is the percentage of increase in its price?",["20%","25%","30%","35%"]],
+            ["What is the smallest number that should be added to 27452 to make it exactly divisible by 9?",["1","2","7","8"]],
+            ["A number when divided by 63 leaves the remainder 30. What is the remainder when the same number is divided by 21?",["7","30","20","9"]],
+            ["What is the unit digit in the product of all two digit prime numbers?",["1","3","5","7"]],
+            ["A student is ranked 18th from the top and 17th from the bottom. How many students are there in the class?",["34","35","38","42"]],
+            ["How many 4’s are immediately followed by 8 but not immediately preceded by 7 in the following series?",["2","3","4","5"]],
+            ["Sohan remembers that his cousin was born between 20th and 23rd June, while his uncle remembers that the birthdate was after 21st June and before 24th June. If both statements are correct, on which date of June was the cousin born?",["21","22","20","can't say"]],
+            ["X, Y, and Z rented a pasture for Rs 21,200. X grazed 6 cows for 3 months, Y grazed 8 cows for 5 months, and Z grazed 12 cows for 4 months. The rent paid by Y is:",["Rs 5000","Rs 6000","Rs 8000","Rs 5500"]],
+            ["The sum of the present ages of R and S is 80 years, and their ages are in the ratio of 9:7. What will be the age of S after 6 years?",["32 Years","34 Years","36 Years","41 Years"]],
+            ["Arrange the following words in a logical order.1.Mountain 2. Hill 3. Valley 4. Plain",["1,3,4,2","4,3,2,1","3,4,2,1","2,1,4,3"]],
+            ["Anand, Bhanu and Chandini invested Rs 24000, Rs 36000, Rs 60000 in a business for 1 year. At the end of the year they got Rs 25000. What is the share of Bhanu in the profit?",["Rs 7500","Rs 5000","Rs 10000","Rs 12000"]],
+            ["In a half- yearly test ,  Anand scores more than Bhanu and less than Priya. Esha scores more than Priya but less than Sundar. Who among them scored the highest marks?",["Priya","Sundar","Anand","Bhanu"]],
+            ["Complete the number series 24,  28,  36,  52,  84, _",["128","148","144","165"]],
+            ["Sravani is facing East. She turns 2000 in the clock wise direction and then 3800 in anti-clockwise direction. Which direction is she facing now?",["East","South-west","North-East","West"]],
+            ["If two fifth of one-fourth of a number is 18, what is the sum of the two digits of the number?",["40","9","4","1"]],
+            ["Sravya has to type the natural numbers from 1 to 499 in a word document. How many strokes on a computer keyboard are needed to perform the task?",["2892","1389","2432","1489"]],
+            ["She is very good __ playing the piano, but she is not interested __ learning to sing.",["at,in","for,with","at,on","in,for"]],
+            ["Identify the error in the following sentence:The team was celebrating their victory, (1)/ they had worked hard for months to achieve it (2)/ and were excited for the challenges ahead. (3)/ No error (4)",["1","2","3","4"]],
+            ["The new technology promises to ____ the efficiency of the manufacturing process.",["enhace","diminish","ignore","reduce"]],
+            ["Choose the word that is the antonym of 'ELOQUENT':",["Fluent","Inarticulate","Persuasive","Articulate"]],
+            ["Spot the error : Hari was appointed leader (1)/ of a group of young social workers (2)/that have accepted to help and develop the village in three months. (3)/ No error (4)",["1","2","3","4"]],
+            ["Which of the following storage classes in C ensures that a variable retains its value between function calls?",["auto","static","register","extern"]],
+            ["What is the output of the following C program? main() {     int i;     for(i = 1; i <= 5; i++) { if(i % 2 == 0) { printf(''%d''', i);}}",["1 2 3 4 5","2 4","1 3 5","1 2 3 4"]],
+            ["What will be the output of the following C program int main() { int arr[] = {10, 22, 36, 45};    printf(''%d'', *(arr + 2));  return 0;",["1 0","22","36","45"]],
+            ["What is the output? int main() { int a = 10, b = 5; printf(''%d''', a-- - --b);return 0;}",["4","5","6","7"]],
+            ["Which of the following is NOT a valid type of operator in C?",["Arithametic operator","Conditonal Operator","Bitwise opertor","Floating-point operator"]],
+            ["Twenty-four men can complete a work in sixteen days. Thirty-two women’s can complete the same work in twenty-four days. Sixteen men and sixteen women started working and work for twelve days. How many more men are to added to complete the remaining work in 2days?",["16","24","36","48"]],
+            ["Two trains 140m and 160m long run at the speed of 60 km/hr and 40 km/hr respectively in opposite directions on parallel tracks. The time (in seconds) which they take to cross each other, is :",["9","9.6","10","10.8"]],
+            ["A man can twice as long to row a distance against the stream as to row the same distance in favor of the stream. The  ration of the speed of the boat( in still water) and the stream is:",["2:1","3:1","3:2","4:3"]],
+            ["If the true discount on a certain sum due 6 months hence at 15% is Rs. 120, what is the banker’s discount on the same sum for the same time and the same rate?",["129","139","149","159"]],
+            ["A wheel that has 6 cogs is meshed with a large wheel of 14 cogs. When the smaller wheel has made 21 revolutions, then the numbers of revolutions made by the large wheel is:",["4","9","12","49"]],
+            ["A man bought toffees at 3 for a rupee. How many for a rupee must he sell to gain 50%?",["1","2","3","4"]],
+            ["Village X Has a population of 68000, which is decreasing at the rate of 1200 per year. Village Y has a population of 42000, which is increasing at the rate of 800 per year. In how many years will the population of the two villages be equal?",["12","13","14","15"]],
+            ["The profit earned by the selling an article for Rs 832 is equal to the loss incurred when the same article is sold for 448. What should be the sales price for making 50% profit?",["Rs 920","Rs 960","Rs 1060","Rs 1200"]],
+            ["The salaries of A: B : C  is 2 : 3 : 5. If the increments of 15%, 10%, and 20% are allowed respectively in their salaries, then what will be the new ratio of their salaries?",["3:3:10","10:11:20","23:33:60","Cannot be determinted"]],
+            ["Two pipes can fill a tank in 20 and 24 mints respectively and a waste pipe can empty 3 gallons per minute. All the three pipes working together can fill the tank in 15 minutes. The capacity of the tank is :",["60 gallons","100 gallons","120gallons","180 gallons"]],
+            ["If P + Q means P is the brother of Q; P * Q means P is the wife of Q and P % Q means P is the daughter of Q then which of the following means D is the uncle of A?",["A % B * C + D","A * B + C % D","A + C % B * D","None of these"]],
+            ["From his house, Lokesh went 15 km to the North. Then he turned west and covered 10 km. Then he turned south and covered 5 km. Finally turning to the east, he covered 10 km. In which direction is he from his house?",["East","West","North","South"]],
+            ["What number will come next in the following series? 5, 8, 9, 14, 16, 23, 26 ",["29","33","35","39"]],
+            ["What is the Exact OPPOSITE of the NIGGARDLY",["Frugal","Thrify","Stingy","Generous"]],
+            ["If x^y denotes x raised to the power y, Find last two digits of (1141^3843) + (1961^4181)",["02","82","42","22"]],
+            ["In a dance school, there are 14 girls and 15 boys. In how many ways, a group consisting of 3 girls and 7 boys can be formed for a competition?",["2342340","2232340","2132340","2132840"]],
+            ["If the minute hand of a clock points towards west direction at 6 pm then in which direction does the hour hand points at 4.30 am ?",["North-East","South-West","South","North"]],
+            ["From a bus stand, 5 buses leave every day to the nearest shopping mall, 30 buses leave every day to the nearest Railway station and 25 buses leave for a village. Transport committee made some changes on the number of buses from 5 to 15, 30 to 35 by using the formula y = ax + b and y = ax -b to increase and decrease respectively.What will be the revised number of buses to village if they run less buses?",["10","11","5","9"]],
+            ["Valentine day 14 Feb. 2005 was celebrated by Anand and shilpa on Monday. What day of the week would come on 14 Feb.2010?",["Saturday","Wednesday","Sunday","Saturday"]],
+            ["A lady builds 9cm length,12cm width, and 3cm height box using 3cubic cm cubes. What is the minimum number of cubes required to build the box?",["424","324","234","108"]],
+            ["An equation of the form 7x+17y+3z=54. Find the difference between x intercept and z intercept?",["(53/7)-17","(54/7)-18","(55/7)-19","None of these"]],
+            ["How many 5’s will be there in the number 121, 122, 123,………..till 356 ?",["49","50","51","52"]],
+            ["A : B = 7 : 4, After 5 years, A : B = 11 : 7,   A = ?",["12 Years","14 Years","15 Years","28 Years"]],
+            ["7^2  + 79^2 = 172^2 – 88^2 – 8203",["86","89","83","93"]],
+            ["A jogger running at 9 Kmph alongside a railway track in 240 meters ahead of the engine of a 120 meters long train running at 45 Kmph in the same direction. In how much time will the train pass the jogger?",["3.6 sec","18 sec","36 sec", "72 sec"]],
+            ["A 20 liter mixture of milk and water contains milk and water in the ratio 3 : 2. 10 liters of the mixture is removed and replaced with pure milk and the operation is repeated once more. At the end of the two removals and replacement, what is the ratio of milk and water in the resultant mixture?",["17:3","9:1","3:17","5:3"]]
+            
+        ];
+
+        const correctAnswersIndex = [
+        2, 2, 1, 2, 2, 1, 1, 2, 0, 2, 2, 0, 0, 1, 0, 1, 0, 1, 2, 1, 3, 3, 0, 1, 1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 0, 2, 0, 1, 2, 1, 1, 2, 1, 3, 1, 3, 1, 0, 1, 1, 1, 1, 2, 2, 3, 2, 0, 3, 1, 0, 0, 3, 0, 3, 1, 2, 3, 0, 2, 1];
+
+        let selectedQuestions = [];
+        let userAnswers = [];
+        let currentQuestion = 0;
+
+        function shuffleQuestions() {
+            const questions = allQuestions.map((q, i) => ({ question: q[0], choices: q[1], correct: correctAnswersIndex[i] }));
+            questions.sort(() => Math.random() - 0.5); 
+            selectedQuestions = questions.slice(0, 20); 
+            userAnswers = new Array(selectedQuestions.length).fill(null);
+        }
+
+        function loadQuestion() {
+            const question = selectedQuestions[currentQuestion];
+            document.getElementById("question").innerText = question.question;
+            const options = document.getElementById("options");
+            options.innerHTML = "";
+
+            question.choices.forEach((choice, index) => {
+                const optionItem = document.createElement("li");
+                const radioInput = document.createElement("input");
+                radioInput.type = "radio";
+                radioInput.name = "option";
+				radioInput.setAttribute("id","radio");
+                radioInput.value = index;
+                radioInput.checked = userAnswers[currentQuestion] === index;
+
+                radioInput.addEventListener("change", () => {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                optionItem.appendChild(radioInput);
+                optionItem.appendChild(document.createTextNode(choice));
+                options.appendChild(optionItem);
+            });
+
+            document.getElementById("prevButton").disabled = currentQuestion === 0;
+            document.getElementById("nextButton").disabled = currentQuestion === selectedQuestions.length - 1;
+            document.getElementById("submitButton").disabled = currentQuestion !== selectedQuestions.length - 1;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < selectedQuestions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+        var count = 1200;
+        var interval = setInterval(function () {
+        var minutes = Math.floor(count / 60); 
+        var seconds = count % 60;
+            document.getElementById('count').innerHTML = 
+            "Time Left: "+minutes + " min " + (seconds < 10 ? "0" + seconds : seconds) + " sec";
+            count--;
+    if (count === -1) {
+        clearInterval(interval);
+        submitQuiz();
+    }
+}, 1000);
+function submitQuiz() {
+            let score = 0;
+            selectedQuestions.forEach((q, i) => {
+                if (userAnswers[i] === q.correct) {
+                    score++;
+                }
+            });
+            document.getElementById("body").innerHTML=score;
+            
+        }
+
+        shuffleQuestions();
+        loadQuestion();
+    </script>
+</body>
+</html>
